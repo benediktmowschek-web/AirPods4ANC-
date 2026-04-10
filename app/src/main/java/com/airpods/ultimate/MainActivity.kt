@@ -1,4 +1,4 @@
-package com.airpods.ultimate
+package com.airpods4anc
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
