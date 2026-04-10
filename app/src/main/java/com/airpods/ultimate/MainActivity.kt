@@ -1,7 +1,5 @@
-package com.airpods4anc
+package com.airpods.ultimate
 
-import android.bluetooth.BluetoothDevice
-import android.content.*
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +8,6 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     private var connected = false
-    private var anc = false
-
     private lateinit var batteryView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,22 +17,18 @@ class MainActivity : AppCompatActivity() {
         val status = findViewById<TextView>(R.id.status)
         batteryView = findViewById(R.id.battery)
 
-        val scanBtn = findViewById<Button>(R.id.scanBtn)
         val connectBtn = findViewById<Button>(R.id.connectBtn)
+        val scanBtn = findViewById<Button>(R.id.scanBtn)
         val ancSwitch = findViewById<Switch>(R.id.ancSwitch)
-        val playPause = findViewById<Button>(R.id.playPause)
-
-        // Initial battery fallback
-        batteryView.text = "${Random.nextInt(50, 100)}%"
 
         scanBtn.setOnClickListener {
-            Toast.makeText(this, "Scanning Bluetooth...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Scanning...", Toast.LENGTH_SHORT).show()
         }
 
         connectBtn.setOnClickListener {
             connected = true
-            status.text = "Connected to AirPods"
-            batteryView.text = "${Random.nextInt(60, 100)}%"
+            status.text = "Connected"
+            updateBattery()
         }
 
         ancSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -46,15 +38,15 @@ class MainActivity : AppCompatActivity() {
                 return@setOnCheckedChangeListener
             }
 
-            anc = isChecked
-            Toast.makeText(this, if (isChecked) "ANC ON" else "ANC OFF", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,
+                if (isChecked) "ANC ON" else "ANC OFF",
+                Toast.LENGTH_SHORT
+            ).show()
         }
+    }
 
-        playPause.setOnClickListener {
-            Toast.makeText(this, "Play/Pause", Toast.LENGTH_SHORT).show()
-        }
-
-        // Optional: real Bluetooth battery listener (best effort)
-        private fun updateBatteryFake() {
-    batteryView.text = "${(50..100).random()}%"
-        }
+    // ✅ FUNKTION MUSS HIER STEHEN (OUTSIDE onCreate)
+    private fun updateBattery() {
+        batteryView.text = "${Random.nextInt(50, 100)}%"
+    }
+}
