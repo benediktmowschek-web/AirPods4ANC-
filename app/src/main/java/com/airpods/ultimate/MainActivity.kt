@@ -55,11 +55,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Optional: real Bluetooth battery listener (best effort)
-        registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val level = intent.getIntExtra(BluetoothDevice.EXTRA_BATTERY_LEVEL, -1)
-                if (level > 0) batteryView.text = "$level%"
-            }
-        }, IntentFilter(BluetoothDevice.ACTION_BATTERY_LEVEL_CHANGED))
-    }
-}
+        private fun updateBatteryFake() {
+    batteryView.text = "${(50..100).random()}%"
+        }
