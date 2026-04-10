@@ -1,16 +1,20 @@
-package com.airpods4anc
+package com.airpods.ultimate
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.content.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var receiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,78 +24,44 @@ class MainActivity : ComponentActivity() {
                 AirPodsScreen()
             }
         }
+
+        // Bluetooth Listener
+        receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                // UI updated automatisch über Compose
+            }
+        }
+
+        val filter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
+        registerReceiver(receiver, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(receiver)
     }
 }
 
 @Composable
 fun AirPodsScreen() {
 
+    var deviceName by remember { mutableStateOf("Nicht verbunden") }
     var connected by remember { mutableStateOf(false) }
     var ancMode by remember { mutableStateOf("ANC") }
+
+    // AirPods erkennen
+    LaunchedEffect(Unit) {
+        val adapter = BluetoothAdapter.getDefaultAdapter()
+        val device = adapter?.bondedDevices?.firstOrNull {
+            it.name.contains("AirPods", true)
+        }
+
+        deviceName = device?.name ?: "Keine AirPods"
+        connected = device != null
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-
-        // Titel
-        Text(
-            text = "AirPods Ultimate",
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        // Verbindungsstatus
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp)
-            ) {
-                Text("Status")
-                Text(if (connected) "Verbunden" else "Nicht verbunden")
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Button(onClick = { connected = !connected }) {
-                    Text("Verbinden")
-                }
-            }
-        }
-
-        // Batterie
-        Card {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text("Batterie")
-                Text("Links: 85%")
-                Text("Rechts: 87%")
-                Text("Case: 92%")
-            }
-        }
-
-        // ANC Steuerung
-        Card {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text("Geräuschkontrolle")
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Button(onClick = { ancMode = "ANC" }) {
-                        Text("ANC")
-                    }
-                    Button(onClick = { ancMode = "Transparenz" }) {
-                        Text("Transparenz")
-                    }
-                    Button(onClick = { ancMode = "Aus" }) {
-                        Text("Aus")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-                Text("Aktiv: $ancMode")
-            }
-        }
-    }
-}
+        verticalArrangement = Arrangement.spacedBy(
