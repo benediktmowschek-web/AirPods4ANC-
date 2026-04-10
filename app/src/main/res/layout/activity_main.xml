@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F1115">
+    android:background="#000000">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,9 +10,10 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <!-- TITLE -->
         <TextView
             android:id="@+id/title"
-            android:text="AirPods Control"
+            android:text="PodsBattery"
             android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -22,57 +23,117 @@
 
         <TextView
             android:id="@+id/status"
-            android:text="Disconnected"
-            android:textColor="#A8B0B9"
+            android:text="Not Connected"
+            android:textColor="#AAAAAA"
             android:layout_marginTop="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <!-- MAIN BATTERY CARD -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginTop="20dp"
-            android:background="#1A1D23">
+            android:padding="20dp"
+            android:layout_marginTop="25dp"
+            android:background="#1C1C1E">
 
             <TextView
-                android:text="Battery"
-                android:textColor="#A8B0B9"/>
+                android:text="AirPods"
+                android:textColor="#AAAAAA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/battery"
-                android:text="-- %"
-                android:textSize="24sp"
+                android:id="@+id/mainBattery"
+                android:text="--%"
+                android:textSize="40sp"
                 android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!-- LEFT / RIGHT / CASE -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:background="#1C1C1E"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:text="Left"
+                    android:textColor="#AAAAAA"/>
+
+                <TextView
+                    android:id="@+id/leftBattery"
+                    android:text="--%"
+                    android:textSize="22sp"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:background="#1C1C1E">
+
+                <TextView
+                    android:text="Right"
+                    android:textColor="#AAAAAA"/>
+
+                <TextView
+                    android:id="@+id/rightBattery"
+                    android:text="--%"
+                    android:textSize="22sp"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- CASE -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:layout_marginTop="10dp"
+            android:background="#1C1C1E">
+
+            <TextView
+                android:text="Case"
+                android:textColor="#AAAAAA"/>
+
+            <TextView
+                android:id="@+id/caseBattery"
+                android:text="--%"
+                android:textSize="22sp"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/scanBtn"
-            android:text="Scan Devices"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
+        <!-- BUTTONS -->
         <Button
             android:id="@+id/connectBtn"
             android:text="Connect AirPods"
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <Switch
-            android:id="@+id/ancSwitch"
-            android:text="ANC Mode"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
         <Button
-            android:id="@+id/playPause"
-            android:text="Play / Pause"
-            android:layout_marginTop="20dp"
+            android:id="@+id/refreshBtn"
+            android:text="Refresh Battery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
