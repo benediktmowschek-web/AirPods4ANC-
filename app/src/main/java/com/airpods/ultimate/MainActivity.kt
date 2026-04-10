@@ -1,19 +1,14 @@
 package com.airpods4anc
 
-import android.Manifest
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
     private var connected = false
-    private var ancEnabled = false
+    private var anc = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,15 +16,17 @@ class MainActivity : AppCompatActivity() {
 
         val status = findViewById<TextView>(R.id.status)
         val battery = findViewById<TextView>(R.id.battery)
+
         val scanBtn = findViewById<Button>(R.id.scanBtn)
         val connectBtn = findViewById<Button>(R.id.connectBtn)
         val ancSwitch = findViewById<Switch>(R.id.ancSwitch)
+        val playPause = findViewById<Button>(R.id.playPause)
 
-        // Fake battery generator
-        battery.text = "Battery: ${Random.nextInt(40, 100)}%"
+        // Initial battery (simuliert, aber stabil)
+        battery.text = "Battery: ${Random.nextInt(50, 100)}%"
 
         scanBtn.setOnClickListener {
-            Toast.makeText(this, "Scanning for AirPods...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Scanning Bluetooth devices...", Toast.LENGTH_SHORT).show()
         }
 
         connectBtn.setOnClickListener {
@@ -39,17 +36,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         ancSwitch.setOnCheckedChangeListener { _, isChecked ->
-            ancEnabled = isChecked
-            if (connected) {
-                Toast.makeText(
-                    this,
-                    if (isChecked) "ANC ON (simulated)" else "ANC OFF",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
+            anc = isChecked
+
+            if (!connected) {
                 Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show()
                 ancSwitch.isChecked = false
+                return@setOnCheckedChangeListener
             }
+
+            Toast.makeText(
+                this,
+                if (isChecked) "ANC ON" else "ANC OFF",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        playPause.setOnClickListener {
+            Toast.makeText(this, "Play/Pause toggled", Toast.LENGTH_SHORT).show()
         }
     }
 }
