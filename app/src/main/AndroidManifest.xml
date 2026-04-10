@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.AirPods4ANC">
+    package="com.airpods4anc">
 
     <application
-        android:label="AirPods4ANC"
+        android:label="airpods4anc"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <activity android:name=".MainActivity">
