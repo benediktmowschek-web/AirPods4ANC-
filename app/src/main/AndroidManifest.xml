@@ -7,7 +7,7 @@
 
     <application
         android:label="AirPods4ANC"
-        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+        android:theme="@style/Theme.AirPods4ANC"
 
         <activity
             android:name=".MainActivity"
