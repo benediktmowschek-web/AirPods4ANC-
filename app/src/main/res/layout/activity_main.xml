@@ -1,46 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="20dp">
+    android:background="#0F1115">
 
-    <TextView
-        android:id="@+id/title"
-        android:text="AirPods Control"
-        android:textSize="28sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:id="@+id/status"
-        android:text="Status: Disconnected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <!-- Header -->
+        <TextView
+            android:id="@+id/title"
+            android:text="AirPods Control"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/battery"
-        android:text="Battery: -- %"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/status"
+            android:text="Disconnected"
+            android:textSize="16sp"
+            android:textColor="#A8B0B9"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/scanBtn"
-        android:text="Scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <!-- Battery Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:layout_marginTop="25dp"
+            android:background="#1A1D23">
 
-    <Button
-        android:id="@+id/connectBtn"
-        android:text="Connect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:text="Battery"
+                android:textSize="14sp"
+                android:textColor="#A8B0B9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    <Switch
-        android:id="@+id/ancSwitch"
-        android:text="ANC Mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/battery"
+                android:text="-- %"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-</LinearLayout>
+        <!-- Buttons Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:layout_marginTop="20dp"
+            android:background="#1A1D23">
+
+            <Button
+                android:id="@+id/scanBtn"
+                android:text="Scan Devices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/connectBtn"
+                android:text="Connect AirPods"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- Controls Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:layout_marginTop="20dp"
+            android:background="#1A1D23">
+
+            <Switch
+                android:id="@+id/ancSwitch"
+                android:text="Active Noise Cancelling"
+                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
