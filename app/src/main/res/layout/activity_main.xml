@@ -10,7 +10,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Header -->
         <TextView
             android:id="@+id/title"
             android:text="AirPods Control"
@@ -24,80 +23,58 @@
         <TextView
             android:id="@+id/status"
             android:text="Disconnected"
-            android:textSize="16sp"
             android:textColor="#A8B0B9"
             android:layout_marginTop="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <!-- Battery Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp"
-            android:layout_marginTop="25dp"
+            android:padding="16dp"
+            android:layout_marginTop="20dp"
             android:background="#1A1D23">
 
             <TextView
                 android:text="Battery"
-                android:textSize="14sp"
-                android:textColor="#A8B0B9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textColor="#A8B0B9"/>
 
             <TextView
                 android:id="@+id/battery"
                 android:text="-- %"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
 
-        <!-- Buttons Card -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="18dp"
+        <Button
+            android:id="@+id/scanBtn"
+            android:text="Scan Devices"
             android:layout_marginTop="20dp"
-            android:background="#1A1D23">
-
-            <Button
-                android:id="@+id/scanBtn"
-                android:text="Scan Devices"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <Button
-                android:id="@+id/connectBtn"
-                android:text="Connect AirPods"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <!-- Controls Card -->
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="18dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/connectBtn"
+            android:text="Connect AirPods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Switch
+            android:id="@+id/ancSwitch"
+            android:text="ANC Mode"
+            android:textColor="#FFFFFF"
             android:layout_marginTop="20dp"
-            android:background="#1A1D23">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-            <Switch
-                android:id="@+id/ancSwitch"
-                android:text="Active Noise Cancelling"
-                android:textColor="#FFFFFF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/playPause"
+            android:text="Play / Pause"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 </ScrollView>
