@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
@@ -20,19 +21,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MaterialTheme {
+            MaterialTheme(
+                colorScheme = dynamicColorScheme()
+            ) {
                 AirPodsScreen()
             }
         }
 
-        // Bluetooth Listener
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                // UI updated automatisch über Compose
+                // trigger recomposition automatically
             }
         }
 
-        val filter = IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED)
+        val filter = IntentFilter().apply {
+            addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
+            addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
+        }
+
         registerReceiver(receiver, filter)
     }
 
@@ -45,23 +51,20 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AirPodsScreen() {
 
-    var deviceName by remember { mutableStateOf("Nicht verbunden") }
+    var deviceName by remember { mutableStateOf("Suche...") }
     var connected by remember { mutableStateOf(false) }
     var ancMode by remember { mutableStateOf("ANC") }
 
-    // AirPods erkennen
+    var leftBattery by remember { mutableStateOf(0) }
+    var rightBattery by remember { mutableStateOf(0) }
+    var caseBattery by remember { mutableStateOf(0) }
+
+    // 🔵 AirPods erkennen
     LaunchedEffect(Unit) {
-        val adapter = BluetoothAdapter.getDefaultAdapter()
-        val device = adapter?.bondedDevices?.firstOrNull {
-            it.name.contains("AirPods", true)
-        }
+        updateBluetooth { name, isConnected ->
+            deviceName = name
+            connected = isConnected
 
-        deviceName = device?.name ?: "Keine AirPods"
-        connected = device != null
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(
+            if (isConnected) {
+                // Fake realistisch (bis echte Daten verfügbar)
+                leftBattery = (80..100
