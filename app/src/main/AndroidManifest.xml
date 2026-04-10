@@ -8,7 +8,7 @@
 
     <application
         android:label="AirPods Control"
-        android:theme="@style/Theme.AirPods">
+        android:theme="@style/Theme.AirPods"
 
         <activity
             android:name=".MainActivity"
