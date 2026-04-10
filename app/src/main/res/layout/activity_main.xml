@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,75 +10,26 @@
         android:id="@+id/title"
         android:text="AirPods Control"
         android:textSize="28sp"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/status"
         android:text="Status: Disconnected"
-        android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/deviceList"
-        android:text="No devices found"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/battery"
         android:text="Battery: -- %"
-        android:layout_marginTop="10dp"
-        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/scanBtn"
         android:text="Scan"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/connectBtn"
-        android:text="Connect AirPods"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Switch
-        android:id="@+id/ancSwitch"
-        android:text="ANC Mode"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-
-        <Button
-            android:id="@+id/play"
-            android:text="Play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/pause"
-            android:text="Pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-</LinearLayout>        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/connectBtn"
@@ -88,29 +40,6 @@
     <Switch
         android:id="@+id/ancSwitch"
         android:text="ANC Mode"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/playPause"
-        android:text="Play / Pause"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-</LinearLayout>    <Switch
-        android:id="@+id/ancSwitch"
-        android:text="ANC (simulated)"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/battery"
-        android:text="Battery: -- %"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
