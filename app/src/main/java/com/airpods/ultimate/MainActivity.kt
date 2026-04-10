@@ -1,4 +1,3 @@
-
 package com.airpods.ultimate
 
 import android.os.Bundle
@@ -9,4 +8,3 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 }
-
