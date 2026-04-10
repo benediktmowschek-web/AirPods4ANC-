@@ -1,51 +1,96 @@
 package com.airpods4anc
 
 import android.os.Bundle
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import kotlin.random.Random
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
-class MainActivity : AppCompatActivity() {
-
-    private var connected = false
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val status = findViewById<TextView>(R.id.status)
+        setContent {
+            MaterialTheme {
+                AirPodsScreen()
+            }
+        }
+    }
+}
 
-        val main = findViewById<TextView>(R.id.mainBattery)
-        val left = findViewById<TextView>(R.id.leftBattery)
-        val right = findViewById<TextView>(R.id.rightBattery)
-        val case = findViewById<TextView>(R.id.caseBattery)
+@Composable
+fun AirPodsScreen() {
 
-        val connectBtn = findViewById<Button>(R.id.connectBtn)
-        val refreshBtn = findViewById<Button>(R.id.refreshBtn)
+    var connected by remember { mutableStateOf(false) }
+    var ancMode by remember { mutableStateOf("ANC") }
 
-        fun updateBattery() {
-            val l = Random.nextInt(40, 100)
-            val r = Random.nextInt(40, 100)
-            val c = Random.nextInt(30, 100)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
 
-            main.text = "${(l + r) / 2}%"
-            left.text = "$l%"
-            right.text = "$r%"
-            case.text = "$c%"
+        // Titel
+        Text(
+            text = "AirPods Ultimate",
+            style = MaterialTheme.typography.headlineMedium
+        )
+
+        // Verbindungsstatus
+        Card(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp)
+            ) {
+                Text("Status")
+                Text(if (connected) "Verbunden" else "Nicht verbunden")
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Button(onClick = { connected = !connected }) {
+                    Text("Verbinden")
+                }
+            }
         }
 
-        connectBtn.setOnClickListener {
-            connected = true
-            status.text = "Connected to AirPods"
-            updateBattery()
-            Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show()
+        // Batterie
+        Card {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text("Batterie")
+                Text("Links: 85%")
+                Text("Rechts: 87%")
+                Text("Case: 92%")
+            }
         }
 
-        refreshBtn.setOnClickListener {
-            if (connected) {
-                updateBattery()
-            } else {
-                Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show()
+        // ANC Steuerung
+        Card {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text("Geräuschkontrolle")
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Button(onClick = { ancMode = "ANC" }) {
+                        Text("ANC")
+                    }
+                    Button(onClick = { ancMode = "Transparenz" }) {
+                        Text("Transparenz")
+                    }
+                    Button(onClick = { ancMode = "Aus" }) {
+                        Text("Aus")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text("Aktiv: $ancMode")
             }
         }
     }
