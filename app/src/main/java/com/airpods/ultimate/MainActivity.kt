@@ -8,45 +8,45 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     private var connected = false
-    private lateinit var batteryView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val status = findViewById<TextView>(R.id.status)
-        batteryView = findViewById(R.id.battery)
+
+        val main = findViewById<TextView>(R.id.mainBattery)
+        val left = findViewById<TextView>(R.id.leftBattery)
+        val right = findViewById<TextView>(R.id.rightBattery)
+        val case = findViewById<TextView>(R.id.caseBattery)
 
         val connectBtn = findViewById<Button>(R.id.connectBtn)
-        val scanBtn = findViewById<Button>(R.id.scanBtn)
-        val ancSwitch = findViewById<Switch>(R.id.ancSwitch)
+        val refreshBtn = findViewById<Button>(R.id.refreshBtn)
 
-        scanBtn.setOnClickListener {
-            Toast.makeText(this, "Scanning...", Toast.LENGTH_SHORT).show()
+        fun updateBattery() {
+            val l = Random.nextInt(40, 100)
+            val r = Random.nextInt(40, 100)
+            val c = Random.nextInt(30, 100)
+
+            main.text = "${(l + r) / 2}%"
+            left.text = "$l%"
+            right.text = "$r%"
+            case.text = "$c%"
         }
 
         connectBtn.setOnClickListener {
             connected = true
-            status.text = "Connected"
+            status.text = "Connected to AirPods"
             updateBattery()
+            Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show()
         }
 
-        ancSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (!connected) {
-                ancSwitch.isChecked = false
+        refreshBtn.setOnClickListener {
+            if (connected) {
+                updateBattery()
+            } else {
                 Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show()
-                return@setOnCheckedChangeListener
             }
-
-            Toast.makeText(this,
-                if (isChecked) "ANC ON" else "ANC OFF",
-                Toast.LENGTH_SHORT
-            ).show()
         }
-    }
-
-    // ✅ FUNKTION MUSS HIER STEHEN (OUTSIDE onCreate)
-    private fun updateBattery() {
-        batteryView.text = "${Random.nextInt(50, 100)}%"
     }
 }
