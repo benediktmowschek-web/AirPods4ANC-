@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.airpods.ultimate'
+    namespace 'com.airpods4anc'
     compileSdk 34
 
     defaultConfig {
