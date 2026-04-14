@@ -1,13 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.airpods4anc">
+    package="com.airpods.ultimate">
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
-        android:label="AirPods4ANC"
-        android:theme="@style/Theme.AirPods4ANC"
+        android:label="AirPods Ultimate"
+        android:theme="@style/Theme.AirPodsUltimate">
 
         <activity
             android:name=".MainActivity"
@@ -23,6 +23,6 @@
         <service
             android:name=".AirPodsService"
             android:exported="false"/>
-            
+
     </application>
 </manifest>
