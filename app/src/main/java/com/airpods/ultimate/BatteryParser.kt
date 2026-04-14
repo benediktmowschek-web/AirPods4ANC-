@@ -1,4 +1,4 @@
-package com.airpods4anc
+package com.airpods.ultimate
 
 data class BatteryData(
     val left: Int,
@@ -10,9 +10,9 @@ object BatteryParser {
 
     fun getBattery(): BatteryData {
         return BatteryData(
-            (70..100).random(),
-            (70..100).random(),
-            (70..100).random()
+            (80..100).random(),
+            (80..100).random(),
+            (80..100).random()
         )
     }
 }
