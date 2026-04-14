@@ -1,4 +1,4 @@
-package com.airpods4anc
+package com.airpods.ultimate
 
 import android.app.*
 import android.content.Intent
@@ -10,7 +10,7 @@ class AirPodsService : Service() {
 
         val notification = Notification.Builder(this, "airpods")
             .setContentTitle("AirPods aktiv")
-            .setContentText("App läuft im Hintergrund")
+            .setContentText("Läuft im Hintergrund")
             .setSmallIcon(android.R.drawable.ic_media_play)
             .build()
 
