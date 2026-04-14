@@ -47,19 +47,26 @@ fun AirPodsScreen() {
     }
 
     Column(
-        Modifier.fillMaxSize().padding(20.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
 
-        Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = "AirPods Ultimate",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         Card {
             Column(Modifier.padding(20.dp)) {
                 Text("Status")
+
                 Text(
                     if (connected) "Verbunden" else "Nicht verbunden",
                     color = if (connected) Color.Green else Color.Red
                 )
+
                 Text("Gerät: $deviceName")
             }
         }
@@ -67,45 +74,7 @@ fun AirPodsScreen() {
         Card {
             Column(Modifier.padding(20.dp)) {
                 Text("Batterie")
-                Text("Links: ${battery.left}%")
-                Text("Rechts: ${battery.right}%")
-                Text("Case: ${battery.case}%")
-            }
-        }
-    }
-}        val device = adapter?.bondedDevices?.firstOrNull {
-            it.name.contains("AirPods", true)
-        }
 
-        connected = device != null
-        deviceName = device?.name ?: "Keine AirPods"
-
-        if (connected) {
-            battery = BatteryParser.getBattery()
-        }
-    }
-
-    Column(
-        Modifier.fillMaxSize().padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-
-        Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
-
-        Card {
-            Column(Modifier.padding(20.dp)) {
-                Text("Status")
-                Text(
-                    if (connected) "Verbunden" else "Nicht verbunden",
-                    color = if (connected) Color.Green else Color.Red
-                )
-                Text("Gerät: $deviceName")
-            }
-        }
-
-        Card {
-            Column(Modifier.padding(20.dp)) {
-                Text("Batterie")
                 Text("Links: ${battery.left}%")
                 Text("Rechts: ${battery.right}%")
                 Text("Case: ${battery.case}%")
