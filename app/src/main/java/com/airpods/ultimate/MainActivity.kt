@@ -29,12 +29,51 @@ fun AirPodsScreen() {
 
     var deviceName by remember { mutableStateOf("Suche...") }
     var connected by remember { mutableStateOf(false) }
-    var battery by remember { mutableStateOf(BatteryData(0,0,0)) }
+    var battery by remember { mutableStateOf(BatteryParser.getBattery()) }
 
     LaunchedEffect(Unit) {
         val adapter = BluetoothAdapter.getDefaultAdapter()
 
         val device = adapter?.bondedDevices?.firstOrNull {
+            it.name.contains("AirPods", true)
+        }
+
+        connected = device != null
+        deviceName = device?.name ?: "Keine AirPods"
+
+        if (connected) {
+            battery = BatteryParser.getBattery()
+        }
+    }
+
+    Column(
+        Modifier.fillMaxSize().padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+
+        Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
+
+        Card {
+            Column(Modifier.padding(20.dp)) {
+                Text("Status")
+                Text(
+                    if (connected) "Verbunden" else "Nicht verbunden",
+                    color = if (connected) Color.Green else Color.Red
+                )
+                Text("Gerät: $deviceName")
+            }
+        }
+
+        Card {
+            Column(Modifier.padding(20.dp)) {
+                Text("Batterie")
+                Text("Links: ${battery.left}%")
+                Text("Rechts: ${battery.right}%")
+                Text("Case: ${battery.case}%")
+            }
+        }
+    }
+}        val device = adapter?.bondedDevices?.firstOrNull {
             it.name.contains("AirPods", true)
         }
 
