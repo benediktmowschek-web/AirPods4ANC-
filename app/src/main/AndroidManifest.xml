@@ -3,7 +3,6 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:label="AirPods Ultimate"
@@ -19,10 +18,6 @@
             </intent-filter>
 
         </activity>
-
-        <service
-            android:name=".AirPodsService"
-            android:exported="false"/>
 
     </application>
 </manifest>
