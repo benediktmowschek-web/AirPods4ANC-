@@ -1,12 +1,10 @@
 package com.airpods.ultimate
 
-import android.content.Intent
+import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,8 +15,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        startService(Intent(this, AirPodsService::class.java))
 
         setContent {
             MaterialTheme {
@@ -33,11 +29,15 @@ fun AirPodsScreen() {
 
     var deviceName by remember { mutableStateOf("Suche...") }
     var connected by remember { mutableStateOf(false) }
-    var ancMode by remember { mutableStateOf("ANC") }
-    var battery by remember { mutableStateOf(BatteryParser.getBattery()) }
+    var battery by remember { mutableStateOf(BatteryData(0,0,0)) }
 
     LaunchedEffect(Unit) {
-        val device = BluetoothManager.getAirPods()
+        val adapter = BluetoothAdapter.getDefaultAdapter()
+
+        val device = adapter?.bondedDevices?.firstOrNull {
+            it.name.contains("AirPods", true)
+        }
+
         connected = device != null
         deviceName = device?.name ?: "Keine AirPods"
 
@@ -53,70 +53,24 @@ fun AirPodsScreen() {
 
         Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
 
-        AnimatedVisibility(visible = true) {
-            Card(shape = RoundedCornerShape(24.dp)) {
-                Column(Modifier.padding(20.dp)) {
-                    Text("Status")
-                    Text(
-                        if (connected) "🟢 Verbunden" else "🔴 Nicht verbunden",
-                        color = if (connected) Color.Green else Color.Red
-                    )
-                    Text("Gerät: $deviceName")
-                }
+        Card {
+            Column(Modifier.padding(20.dp)) {
+                Text("Status")
+                Text(
+                    if (connected) "Verbunden" else "Nicht verbunden",
+                    color = if (connected) Color.Green else Color.Red
+                )
+                Text("Gerät: $deviceName")
             }
         }
 
-        Card(shape = RoundedCornerShape(24.dp)) {
+        Card {
             Column(Modifier.padding(20.dp)) {
                 Text("Batterie")
-                BatteryBar("Links", battery.left)
-                BatteryBar("Rechts", battery.right)
-                BatteryBar("Case", battery.case)
+                Text("Links: ${battery.left}%")
+                Text("Rechts: ${battery.right}%")
+                Text("Case: ${battery.case}%")
             }
         }
-
-        Card(shape = RoundedCornerShape(24.dp)) {
-            Column(Modifier.padding(20.dp)) {
-
-                Text("Geräuschkontrolle")
-
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-
-                    FilterChip(
-                        selected = ancMode == "ANC",
-                        onClick = { ancMode = "ANC" },
-                        label = { Text("ANC") }
-                    )
-
-                    FilterChip(
-                        selected = ancMode == "Transparenz",
-                        onClick = { ancMode = "Transparenz" },
-                        label = { Text("Transparenz") }
-                    )
-
-                    FilterChip(
-                        selected = ancMode == "Aus",
-                        onClick = { ancMode = "Aus" },
-                        label = { Text("Aus") }
-                    )
-                }
-
-                Text("Aktiv: $ancMode")
-            }
-        }
-    }
-}
-
-@Composable
-fun BatteryBar(label: String, value: Int) {
-
-    val progress by animateFloatAsState(value / 100f)
-
-    Column(Modifier.fillMaxWidth()) {
-        Text("$label: $value%")
-        LinearProgressIndicator(
-            progress = progress,
-            modifier = Modifier.fillMaxWidth().height(10.dp)
-        )
     }
 }
