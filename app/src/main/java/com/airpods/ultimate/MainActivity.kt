@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AirPodsScreen() {
 
@@ -37,7 +36,6 @@ fun AirPodsScreen() {
     var ancMode by remember { mutableStateOf("ANC") }
     var battery by remember { mutableStateOf(BatteryParser.getBattery()) }
 
-    // 🔵 Auto Update
     LaunchedEffect(Unit) {
         val device = BluetoothManager.getAirPods()
         connected = device != null
@@ -49,71 +47,38 @@ fun AirPodsScreen() {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+        Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
 
-        // 🏷️ Titel
-        Text(
-            text = "AirPods Ultimate",
-            style = MaterialTheme.typography.headlineMedium
-        )
+        Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
 
-        // 🔵 STATUS (animiert)
-        AnimatedVisibility(
-            visible = true,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Card(
-                shape = RoundedCornerShape(24.dp),
-                elevation = CardDefaults.cardElevation(8.dp)
-            ) {
+        AnimatedVisibility(visible = true) {
+            Card(shape = RoundedCornerShape(24.dp)) {
                 Column(Modifier.padding(20.dp)) {
-
                     Text("Status")
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
                     Text(
                         if (connected) "🟢 Verbunden" else "🔴 Nicht verbunden",
                         color = if (connected) Color.Green else Color.Red
                     )
-
                     Text("Gerät: $deviceName")
                 }
             }
         }
 
-        // 🔋 BATTERIE
-        Card(
-            shape = RoundedCornerShape(24.dp),
-            elevation = CardDefaults.cardElevation(8.dp)
-        ) {
+        Card(shape = RoundedCornerShape(24.dp)) {
             Column(Modifier.padding(20.dp)) {
-
                 Text("Batterie")
-
-                Spacer(modifier = Modifier.height(10.dp))
-
                 BatteryBar("Links", battery.left)
                 BatteryBar("Rechts", battery.right)
                 BatteryBar("Case", battery.case)
             }
         }
 
-        // 🎧 ANC CONTROL
-        Card(
-            shape = RoundedCornerShape(24.dp),
-            elevation = CardDefaults.cardElevation(8.dp)
-        ) {
+        Card(shape = RoundedCornerShape(24.dp)) {
             Column(Modifier.padding(20.dp)) {
 
                 Text("Geräuschkontrolle")
-
-                Spacer(modifier = Modifier.height(10.dp))
 
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
 
@@ -136,7 +101,6 @@ fun AirPodsScreen() {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
                 Text("Aktiv: $ancMode")
             }
         }
@@ -148,19 +112,11 @@ fun BatteryBar(label: String, value: Int) {
 
     val progress by animateFloatAsState(value / 100f)
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-
+    Column(Modifier.fillMaxWidth()) {
         Text("$label: $value%")
-
-        Spacer(modifier = Modifier.height(4.dp))
-
         LinearProgressIndicator(
             progress = progress,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
+            modifier = Modifier.fillMaxWidth().height(10.dp)
         )
-
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
