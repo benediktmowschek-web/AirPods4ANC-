@@ -1,10 +1,34 @@
+package com.airpods.ultimate
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        startService(Intent(this, AirPodsService::class.java))
+
+        setContent {
+            MaterialTheme {
+                AirPodsScreen()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AirPodsScreen() {
 
@@ -13,11 +37,15 @@ fun AirPodsScreen() {
     var ancMode by remember { mutableStateOf("ANC") }
     var battery by remember { mutableStateOf(BatteryParser.getBattery()) }
 
-    // 🔵 Bluetooth Check
+    // 🔵 Auto Update
     LaunchedEffect(Unit) {
         val device = BluetoothManager.getAirPods()
         connected = device != null
         deviceName = device?.name ?: "Keine AirPods"
+
+        if (connected) {
+            battery = BatteryParser.getBattery()
+        }
     }
 
     Column(
@@ -33,29 +61,36 @@ fun AirPodsScreen() {
             style = MaterialTheme.typography.headlineMedium
         )
 
-        // 🔵 Status Card
-        Card(
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(6.dp)
+        // 🔵 STATUS (animiert)
+        AnimatedVisibility(
+            visible = true,
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Column(Modifier.padding(20.dp)) {
+            Card(
+                shape = RoundedCornerShape(24.dp),
+                elevation = CardDefaults.cardElevation(8.dp)
+            ) {
+                Column(Modifier.padding(20.dp)) {
 
-                Text("Status")
+                    Text("Status")
 
-                Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    if (connected) "🟢 Verbunden" else "🔴 Nicht verbunden"
-                )
+                    Text(
+                        if (connected) "🟢 Verbunden" else "🔴 Nicht verbunden",
+                        color = if (connected) Color.Green else Color.Red
+                    )
 
-                Text("Gerät: $deviceName")
+                    Text("Gerät: $deviceName")
+                }
             }
         }
 
-        // 🔋 Batterie Card
+        // 🔋 BATTERIE
         Card(
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(6.dp)
+            shape = RoundedCornerShape(24.dp),
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(Modifier.padding(20.dp)) {
 
@@ -69,10 +104,10 @@ fun AirPodsScreen() {
             }
         }
 
-        // 🎧 ANC Steuerung
+        // 🎧 ANC CONTROL
         Card(
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(6.dp)
+            shape = RoundedCornerShape(24.dp),
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(Modifier.padding(20.dp)) {
 
@@ -102,7 +137,6 @@ fun AirPodsScreen() {
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
-
                 Text("Aktiv: $ancMode")
             }
         }
@@ -112,6 +146,8 @@ fun AirPodsScreen() {
 @Composable
 fun BatteryBar(label: String, value: Int) {
 
+    val progress by animateFloatAsState(value / 100f)
+
     Column(modifier = Modifier.fillMaxWidth()) {
 
         Text("$label: $value%")
@@ -119,10 +155,10 @@ fun BatteryBar(label: String, value: Int) {
         Spacer(modifier = Modifier.height(4.dp))
 
         LinearProgressIndicator(
-            progress = value / 100f,
+            progress = progress,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp)
+                .height(10.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
