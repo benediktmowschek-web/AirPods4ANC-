@@ -51,7 +51,7 @@ fun AirPodsScreen(activity: ComponentActivity) {
 
     DisposableEffect(Unit) {
 
-        val receiver = BluetoothReceiver { name, isConnected, level ->
+        val receiver = BluetoothReceiver { name, isConnected ->
             deviceName = name
             connected = isConnected
             battery = level
