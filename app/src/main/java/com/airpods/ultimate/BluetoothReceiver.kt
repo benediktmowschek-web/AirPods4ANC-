@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 
 class BluetoothReceiver(
-    private val onUpdate: (String, Boolean, Int?) -> Unit
+    private val onUpdate: (String, Boolean) -> Unit
 ) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -18,16 +18,11 @@ class BluetoothReceiver(
             when (intent.action) {
 
                 BluetoothDevice.ACTION_ACL_CONNECTED -> {
-                    onUpdate(device.name ?: "AirPods", true, null)
+                    onUpdate(device.name ?: "AirPods", true)
                 }
 
                 BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
-                    onUpdate("Nicht verbunden", false, null)
-                }
-
-                BluetoothDevice.ACTION_BATTERY_LEVEL_CHANGED -> {
-                    val level = intent.getIntExtra(BluetoothDevice.EXTRA_BATTERY_LEVEL, -1)
-                    onUpdate(device.name ?: "AirPods", true, level)
+                    onUpdate("Nicht verbunden", false)
                 }
             }
         }
