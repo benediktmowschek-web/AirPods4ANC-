@@ -64,7 +64,6 @@ fun AirPodsScreen(activity: ComponentActivity) {
         val filter = IntentFilter().apply {
             addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
             addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
-            addAction(BluetoothDevice.ACTION_BATTERY_LEVEL_CHANGED)
         }
 
         activity.registerReceiver(receiver, filter)
