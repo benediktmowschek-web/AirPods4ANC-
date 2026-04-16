@@ -39,15 +39,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun AirPodsScreen(activity: ComponentActivity) {
 
     var deviceName by remember { mutableStateOf("Suche...") }
     var connected by remember { mutableStateOf(false) }
-    var battery by remember { mutableStateOf<Int?>(null) }
+    var realBattery by remember { mutableStateOf<Int?>(null) }
     var showPopup by remember { mutableStateOf(false) }
 
-    val fallback = BatteryHelper.getFallback()
+    val battery = BatteryHelper.getSmartBattery(realBattery)
 
     DisposableEffect(Unit) {
 
@@ -57,7 +58,9 @@ fun AirPodsScreen(activity: ComponentActivity) {
 
             NotificationHelper.show(activity, name)
 
-            if (isConnected) showPopup = true
+            if (isConnected) {
+                showPopup = true
+            }
         }
 
         val filter = IntentFilter().apply {
@@ -75,55 +78,87 @@ fun AirPodsScreen(activity: ComponentActivity) {
     Box(Modifier.fillMaxSize()) {
 
         Column(
-            Modifier.fillMaxSize().padding(20.dp),
+            Modifier
+                .fillMaxSize()
+                .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                "AirPods",
+                style = MaterialTheme.typography.headlineLarge
+            )
 
-            Card(shape = RoundedCornerShape(30.dp)) {
+            // 🔵 Status Card
+            Card(
+                shape = RoundedCornerShape(32.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF1C1C1E))
+            ) {
                 Column(Modifier.padding(20.dp)) {
-                    Text(if (connected) "Verbunden" else "Nicht verbunden")
-                    Text(deviceName)
+
+                    Text("Status", color = Color.Gray)
+
+                    Text(
+                        if (connected) "Verbunden" else "Nicht verbunden",
+                        color = if (connected) Color(0xFF30D158) else Color.Red
+                    )
+
+                    Text(deviceName, color = Color.White)
                 }
             }
 
-            Card(shape = RoundedCornerShape(30.dp)) {
+            // 🔋 Batterie Card
+            Card(
+                shape = RoundedCornerShape(32.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF1C1C1E))
+            ) {
                 Column(Modifier.padding(20.dp)) {
 
-                    Text("Batterie")
+                    Text("Batterie", color = Color.Gray)
 
-                    Text("Links: ${battery ?: fallback.left}%")
-                    Text("Rechts: ${battery ?: fallback.right}%")
-                    Text("Case: ${battery ?: fallback.case}%")
+                    Text("Links: ${battery.left}%", color = Color.White)
+                    Text("Rechts: ${battery.right}%", color = Color.White)
+                    Text("Case: ${battery.case}%", color = Color.White)
                 }
             }
         }
 
-        // 🍎 POPUP
+        // 🍎 POPUP (FINAL)
         AnimatedVisibility(
             visible = showPopup,
-            enter = slideInVertically { it } + fadeIn(),
+            enter = fadeIn() + scaleIn(initialScale = 0.9f),
             exit = fadeOut()
         ) {
 
             Box(
                 Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
+                contentAlignment = Alignment.Center
             ) {
 
                 Card(
                     shape = RoundedCornerShape(40.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF2C2C2E)
+                    ),
                     modifier = Modifier.padding(20.dp)
                 ) {
 
                     Column(
-                        Modifier.padding(20.dp),
+                        Modifier.padding(25.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        Text(deviceName)
-                        Text("${battery ?: "--"}%")
+                        Text(
+                            deviceName,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = Color.White
+                        )
+
+                        Spacer(Modifier.height(15.dp))
+
+                        Text("L: ${battery.left}%", color = Color.Green)
+                        Text("R: ${battery.right}%", color = Color.Green)
+                        Text("Case: ${battery.case}%", color = Color.Green)
                     }
                 }
             }
