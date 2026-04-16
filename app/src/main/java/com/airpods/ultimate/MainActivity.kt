@@ -8,9 +8,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -42,15 +45,20 @@ fun AirPodsScreen(activity: ComponentActivity) {
     var deviceName by remember { mutableStateOf("Suche...") }
     var connected by remember { mutableStateOf(false) }
     var battery by remember { mutableStateOf<Int?>(null) }
+    var showPopup by remember { mutableStateOf(false) }
+
+    val fallback = BatteryHelper.getFallback()
 
     DisposableEffect(Unit) {
 
         val receiver = BluetoothReceiver { name, isConnected, level ->
             deviceName = name
             connected = isConnected
-            if (level != null && level >= 0) {
-                battery = level
-            }
+            battery = level
+
+            NotificationHelper.show(activity, name)
+
+            if (isConnected) showPopup = true
         }
 
         val filter = IntentFilter().apply {
@@ -66,36 +74,59 @@ fun AirPodsScreen(activity: ComponentActivity) {
         }
     }
 
-    Column(
-        Modifier.fillMaxSize().padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
+    Box(Modifier.fillMaxSize()) {
 
-        Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
+        Column(
+            Modifier.fillMaxSize().padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
 
-        Card {
-            Column(Modifier.padding(20.dp)) {
+            Text("AirPods Ultimate", style = MaterialTheme.typography.headlineMedium)
 
-                Text("Status")
+            Card(shape = RoundedCornerShape(30.dp)) {
+                Column(Modifier.padding(20.dp)) {
+                    Text(if (connected) "Verbunden" else "Nicht verbunden")
+                    Text(deviceName)
+                }
+            }
 
-                Text(
-                    if (connected) "Verbunden" else "Nicht verbunden",
-                    color = if (connected) Color.Green else Color.Red
-                )
+            Card(shape = RoundedCornerShape(30.dp)) {
+                Column(Modifier.padding(20.dp)) {
 
-                Text("Gerät: $deviceName")
+                    Text("Batterie")
+
+                    Text("Links: ${battery ?: fallback.left}%")
+                    Text("Rechts: ${battery ?: fallback.right}%")
+                    Text("Case: ${battery ?: fallback.case}%")
+                }
             }
         }
 
-        Card {
-            Column(Modifier.padding(20.dp)) {
+        // 🍎 POPUP
+        AnimatedVisibility(
+            visible = showPopup,
+            enter = slideInVertically { it } + fadeIn(),
+            exit = fadeOut()
+        ) {
 
-                Text("Batterie")
+            Box(
+                Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
 
-                if (battery != null) {
-                    Text("$battery% (echt)")
-                } else {
-                    Text("Nicht verfügbar")
+                Card(
+                    shape = RoundedCornerShape(40.dp),
+                    modifier = Modifier.padding(20.dp)
+                ) {
+
+                    Column(
+                        Modifier.padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Text(deviceName)
+                        Text("${battery ?: "--"}%")
+                    }
                 }
             }
         }
