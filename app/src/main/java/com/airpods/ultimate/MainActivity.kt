@@ -54,7 +54,6 @@ fun AirPodsScreen(activity: ComponentActivity) {
         val receiver = BluetoothReceiver { name, isConnected ->
             deviceName = name
             connected = isConnected
-            battery = level
 
             NotificationHelper.show(activity, name)
 
